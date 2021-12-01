@@ -8,7 +8,7 @@ import {
 } from 'react'
 import { toast } from 'react-toastify'
 import { api } from '../services/api'
-import { Product, Stock } from '../types'
+import { Product } from '../types'
 
 interface CartProviderProps {
   children: ReactNode
@@ -43,14 +43,14 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
   useEffect(() => {
     prevCarRef.current = cart
   })
-  const cartPreviousValue = prevCarRef.current
+  const cartPreviousValue = prevCarRef.current ?? cart
   // https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
 
   useEffect(() => {
     if (cartPreviousValue !== cart) {
       localStorage.setItem('@RocketShoes:cart', JSON.stringify(cart))
     }
-  }, [cart])
+  }, [cart, cartPreviousValue])
 
   const addProduct = async (productId: number) => {
     try {
